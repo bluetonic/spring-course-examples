@@ -1,11 +1,13 @@
 package net.gfu.seminar.spring.helloworld;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.Environment;
 
 /**
  * Created by im on 12.01.2016.
@@ -15,10 +17,14 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @PropertySource(value = {"classpath:/guest.properties"})
 public class ApplicationConfig {
 
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer pspc(){
-        return new PropertySourcesPlaceholderConfigurer();
-    }
+
+//    @Autowired
+//    private Environment environment;
+
+//    @Bean
+//    public static PropertySourcesPlaceholderConfigurer pspc(){
+//        return new PropertySourcesPlaceholderConfigurer();
+//    }
 
     @Bean(initMethod = "init", destroyMethod = "destroy")
     public Greeting greeting(SpecialGuest specialGuest){
@@ -32,7 +38,8 @@ public class ApplicationConfig {
 */
 
     @Bean @Scope("prototype")
-    public SpecialGuest specialGuest(@Value("${firstname}") String firstname, @Value("${lastname}") String lastname ) {
+    // public SpecialGuest specialGuest(@Value("${firstname}") String firstname, @Value("${lastname}") String lastname ) {
+    public SpecialGuest specialGuest(@Value("#{environment.firstname?:'emptyFirstName'}") String firstname, @Value("#{environment.lastname}") String lastname ) {
         return new SpecialGuest(firstname,lastname);
     }
 
