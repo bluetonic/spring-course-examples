@@ -39,7 +39,8 @@ public class ApplicationConfig {
 
     @Bean @Scope("prototype")
     // public SpecialGuest specialGuest(@Value("${firstname}") String firstname, @Value("${lastname}") String lastname ) {
-    public SpecialGuest specialGuest(@Value("#{environment.firstname?:'emptyFirstName'}") String firstname, @Value("#{environment.lastname}") String lastname ) {
+    // environment.firstname.equals('Ivan')?'Foo':'Bar'}
+    public SpecialGuest specialGuest(@Value("#{environment.firstname?:''}") String firstname, @Value("#{environment.lastname}") String lastname ) {
         return new SpecialGuest(firstname,lastname);
     }
 
