@@ -1,18 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	   default-autowire="constructor">
+
 	<description>helloWorldSpring configuration file - student edition</description>
-	
-	<bean id="greeting" class="net.gfu.seminar.spring.helloworld.Greeting">
+	<context:property-placeholder location="classpath:/guest.properties"/>
+
+	<bean id="greeting" class="net.gfu.seminar.spring.helloworld.Greeting" init-method="init" destroy-method="destroy">
 		<!-- set the property guest via the mutator/modifier method Greeting.setGuest(Guest) -->
-		<property name="guest" ref="guest" />
+		<!-- <property name="guest" ref="guest" /> -->
+
+		<!-- Injection über Constructor -->
+		<!-- <constructor-arg ref="guest" /> -->
+
 	</bean>
 
-	<bean id="guest" class="net.gfu.seminar.spring.helloworld.Guest" >
-	    <!-- set the property name via the mutator/modifier method Guest.setName(String) -->
-		<property name="name" value="Rainer Fall" />
+	<bean id="guest1" class="net.gfu.seminar.spring.helloworld.Guest" >
+		<!-- set the property name via the mutator/modifier method Guest.setName(String) -->
+		<!-- <property name="name" value="Anna Gramm" /> -->
+
+		<!-- Injection über Constructor -->
+		<!-- <constructor-arg name="firstName" value="${firstname}" type="java.lang.String" />
+		<constructor-arg name="lastName" value="${lastname}" />
+		-->
+		<!-- autowiring -->
+		<property name="name" value="Anna Gramm" />
+
+
 	</bean>
-	
+
+	<bean id="guest2" name="guest" class="net.gfu.seminar.spring.helloworld.Guest" autowire-candidate="false">
+		<!-- set the property name via the mutator/modifier method Guest.setName(String) -->
+		<!-- <property name="name" value="Anna Gramm" /> -->
+
+		<!-- Injection über Constructor -->
+		<!-- <constructor-arg name="firstName" value="${firstname}" type="java.lang.String" />
+		<constructor-arg name="lastName" value="${lastname}" />
+		-->
+		<!-- autowiring -->
+		<constructor-arg name="firstName" value="${firstname}" type="java.lang.String" />
+		<constructor-arg name="lastName" value="${lastname}" />
+
+	</bean>
+
+
+
 </beans>

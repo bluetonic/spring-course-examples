@@ -3,17 +3,17 @@ package net.gfu.seminar.spring.helloworld;
 
 /**
  * Says hello to a {@link Guest}.
- * 
+ *
  * @author tf
  *
  */
 public class Greeting {
-	
+
 	private Guest guest;
-	
+
 	public Greeting() {
 	}
-	
+
 	/**
 	 * Creates a {@link Greeting} for the given {@link Guest}
 	 * @param guest
@@ -24,13 +24,13 @@ public class Greeting {
 
 	/**
 	 * Returns the welcome message.
-	 * 
+	 *
 	 * @return
 	 */
 	public String welcome() {
 		return String.format("Welcome %1$s to Spring!", this.getGuest());
 	}
-	
+
 	/**
 	 * Accessor method returning the internal state.
 	 * @return the guest
@@ -45,6 +45,21 @@ public class Greeting {
 	 */
 	public void setGuest(Guest guest) {
 		this.guest = guest;
+	}
+
+	public void init() {
+		System.out.println("init() called on "+this.toString());
+	}
+
+	public void destroy() {
+		System.out.println("destroy() called on "+this.toString());
+	}
+
+	@Override
+	public String toString() {
+		return "Greeting{" +
+				"guest=" + guest +
+				'}';
 	}
 
 }
