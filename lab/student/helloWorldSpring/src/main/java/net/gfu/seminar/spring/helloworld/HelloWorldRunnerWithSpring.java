@@ -3,6 +3,7 @@ package net.gfu.seminar.spring.helloworld;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -26,8 +27,10 @@ public class HelloWorldRunnerWithSpring {
 		// this creates a new instance of the Spring Container aka BeanFactory
 		// BeanFactory beanFactory = new XmlBeanFactory(resource);
 
-		String files = "applicationContext.xml";
-		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(files);
+		// String files = "applicationContext.xml";
+		// ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(files);
+
+		ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 
 		// here we retrieve an instance of Greeting from the Spring BeanFactory
 
