@@ -1,6 +1,8 @@
 package net.gfu.seminar.spring.helloworld;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * Says hello to a {@link Guest}.
  *
@@ -14,11 +16,8 @@ public class Greeting {
 	public Greeting() {
 	}
 
-	/**
-	 * Creates a {@link Greeting} for the given {@link Guest}
-	 * @param guest
-	 */
-	public Greeting(Guest guest) {
+	@Autowired
+	public Greeting( Guest guest) {
 		this.setGuest(guest);
 	}
 

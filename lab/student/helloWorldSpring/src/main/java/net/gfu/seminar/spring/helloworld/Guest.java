@@ -8,7 +8,7 @@ import java.util.Scanner;
  * @author tf
  *
  */
-public class Guest {
+public class Guest implements InterfaceGuest {
 
 	private String firstName;
 	private String lastName;
