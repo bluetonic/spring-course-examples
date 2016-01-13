@@ -9,6 +9,10 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 import javax.sql.DataSource;
 
@@ -20,7 +24,14 @@ import javax.sql.DataSource;
 @PropertySource(value = {"classpath:/guest.properties", "classpath:/jdbc.properties"})
 public class ApplicationConfig {
 
-
+    @Value("${jdbc.driverClassName}")
+    private String driverClassName;
+    @Value("${jdbc.url}")
+    private String url;
+    @Value("${jdbc.username}")
+    private String username;
+    @Value("${jdbc.password}")
+    private String password;
 //    @Autowired
 //    private Environment environment;
 
@@ -53,7 +64,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public DataSource dataSource(@Value("${jdbc.driverClassName}") String driverClassName, @Value("${jdbc.url}") String url, @Value("${jdbc.username}") String username, @Value("${jdbc.password}") String password) {
+    public DataSource dataSource(@Value("${jdbc.driverClassName}") String driverClassName, @Value("${jdbc.url}") String url,
+                                 @Value("${jdbc.username}") String username, @Value("${jdbc.password}") String password) {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(driverClassName);
         dataSource.setUrl(url);
@@ -68,6 +80,19 @@ public class ApplicationConfig {
         GuestJdbcDao guestJdbcDao = new GuestJdbcDao();
         guestJdbcDao.setDataSource(dataSource);
         return guestJdbcDao ;
+    }
+
+    @Bean
+    public DataSourceInitializer dsi(DataSource dataSource) {
+        DataSourceInitializer dsi = new DataSourceInitializer();
+        dsi.setDataSource(dataSource);
+        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+        databasePopulator.setScripts(new Resource[] {
+                new ClassPathResource("drop_hsql_schema.sql"),
+                new ClassPathResource("create_hsql_schema.sql"),
+                new ClassPathResource("insert_testdata_hsql.sql")});
+        dsi.setDatabasePopulator(databasePopulator);
+        return dsi;
     }
 
 
