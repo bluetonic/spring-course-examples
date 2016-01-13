@@ -24,7 +24,7 @@ public class ApplicationConfig {
 //    @Autowired
 //    private Environment environment;
 
-    // Needed for propertyLoader
+    // Needed for java based Configuration
     @Bean
     public static PropertySourcesPlaceholderConfigurer pspc(){
         return new PropertySourcesPlaceholderConfigurer();
