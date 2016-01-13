@@ -11,8 +11,10 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
@@ -22,6 +24,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @PropertySource(value = {"classpath:/guest.properties", "classpath:/jdbc.properties"})
+@EnableTransactionManagement
 public class ApplicationConfig {
 
     @Value("${jdbc.driverClassName}")
@@ -95,6 +98,13 @@ public class ApplicationConfig {
         return dsi;
     }
 
+
+    @Bean
+    public DataSourceTransactionManager transactionManager(DataSource dataSource) {
+        DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+        transactionManager.setDataSource(dataSource);
+        return transactionManager;
+    }
 
 
 }

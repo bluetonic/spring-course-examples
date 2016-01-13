@@ -2,6 +2,9 @@ package net.gfu.seminar.spring.helloworld;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,8 +14,11 @@ import java.util.Scanner;
 /**
  * Created by user1 on 13.01.2016.
  */
+@Transactional
 public class GuestJdbcDao extends JdbcDaoSupport implements GuestDao {
+
     @Override
+    @Transactional(isolation = Isolation.DEFAULT,readOnly = false, propagation = Propagation.SUPPORTS)
     public Long create(Guest guest) {
         final String sql = "INSERT INTO GUESTS (firstname,lastname) VALUES (?,?)";
         final Object[] args = new Object[] {
@@ -23,6 +29,7 @@ public class GuestJdbcDao extends JdbcDaoSupport implements GuestDao {
     }
 
     @Override
+    @Transactional(isolation = Isolation.DEFAULT)
     public Guest findById(Long id) {
         Guest guest = null;
         final String sql = "SELECT * FROM guests WHERE id= ? ";
@@ -77,7 +84,6 @@ public class GuestJdbcDao extends JdbcDaoSupport implements GuestDao {
     }
 
     private RowMapper<Guest> createRowMapper() {
-
         return new RowMapper<Guest>() {
             @Override
             public Guest mapRow(ResultSet rs, int row) throws SQLException {
@@ -86,4 +92,5 @@ public class GuestJdbcDao extends JdbcDaoSupport implements GuestDao {
             }
         };
     }
+
 }
