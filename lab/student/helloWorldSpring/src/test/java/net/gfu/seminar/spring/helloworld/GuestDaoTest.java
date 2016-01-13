@@ -27,6 +27,7 @@ public class GuestDaoTest {
 		assertNotNull(guest);
 		assertNotNull(dao);
 		long numberOfAffectedRows = dao.create(guest);
+		assertEquals(1,numberOfAffectedRows);
 	}
 	
 	@Test
