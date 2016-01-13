@@ -63,6 +63,13 @@ public class ApplicationConfig {
         return dataSource;
     }
 
+    @Bean
+    public GuestJdbcDao guestDao(DataSource dataSource) {
+        GuestJdbcDao guestJdbcDao = new GuestJdbcDao();
+        guestJdbcDao.setDataSource(dataSource);
+        return guestJdbcDao ;
+    }
+
 
 
 }

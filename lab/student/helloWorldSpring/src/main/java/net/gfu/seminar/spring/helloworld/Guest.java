@@ -12,8 +12,9 @@ public class Guest implements InterfaceGuest {
 
 	private String firstName;
 	private String lastName;
+	private long id;
 
-	
+
 	public Guest() {
 		this("", "");
 	}
@@ -28,6 +29,12 @@ public class Guest implements InterfaceGuest {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
+	}
+
+	public Guest(long id, String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.id = id;
 	}
 
 	public String getName() {
@@ -62,4 +69,11 @@ public class Guest implements InterfaceGuest {
 		this.lastName = lastName;
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 }
