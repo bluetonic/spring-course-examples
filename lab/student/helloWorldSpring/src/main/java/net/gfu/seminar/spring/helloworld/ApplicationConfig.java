@@ -1,12 +1,10 @@
 package net.gfu.seminar.spring.helloworld;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
@@ -14,6 +12,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.orm.hibernate3.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -24,6 +24,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @PropertySource(value = {"classpath:/guest.properties", "classpath:/jdbc.properties"})
+@Import({HibernateConfig.class, JdbcConfig.class})
 @EnableTransactionManagement
 public class ApplicationConfig {
 
@@ -66,6 +67,7 @@ public class ApplicationConfig {
         return new Guest("Reiner", "Unsinn");
     }
 
+
     @Bean
     public DataSource dataSource(@Value("${jdbc.driverClassName}") String driverClassName, @Value("${jdbc.url}") String url,
                                  @Value("${jdbc.username}") String username, @Value("${jdbc.password}") String password) {
@@ -78,33 +80,9 @@ public class ApplicationConfig {
         return dataSource;
     }
 
-    @Bean
-    public GuestJdbcDao guestDao(DataSource dataSource) {
-        GuestJdbcDao guestJdbcDao = new GuestJdbcDao();
-        guestJdbcDao.setDataSource(dataSource);
-        return guestJdbcDao ;
-    }
-
-    @Bean
-    public DataSourceInitializer dsi(DataSource dataSource) {
-        DataSourceInitializer dsi = new DataSourceInitializer();
-        dsi.setDataSource(dataSource);
-        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-        databasePopulator.setScripts(new Resource[] {
-                new ClassPathResource("drop_hsql_schema.sql"),
-                new ClassPathResource("create_hsql_schema.sql"),
-                new ClassPathResource("insert_testdata_hsql.sql")});
-        dsi.setDatabasePopulator(databasePopulator);
-        return dsi;
-    }
 
 
-    @Bean
-    public DataSourceTransactionManager transactionManager(DataSource dataSource) {
-        DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
-        transactionManager.setDataSource(dataSource);
-        return transactionManager;
-    }
+
 
 
 }

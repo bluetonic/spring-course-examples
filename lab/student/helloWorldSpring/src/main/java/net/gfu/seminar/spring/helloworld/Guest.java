@@ -1,5 +1,6 @@
 package net.gfu.seminar.spring.helloworld;
 
+import javax.persistence.*;
 import java.util.Scanner;
 
 /**
@@ -8,12 +9,14 @@ import java.util.Scanner;
  * @author tf
  *
  */
+@Entity @Table(name="guests")
 public class Guest implements InterfaceGuest {
 
 	private String firstName;
 	private String lastName;
-	private long id;
 
+	@Id @GeneratedValue(strategy= GenerationType.AUTO)
+	private long id;
 
 	public Guest() {
 		this("", "");

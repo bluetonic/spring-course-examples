@@ -1,6 +1,7 @@
 package net.gfu.seminar.spring.helloworld;
 
 import java.util.List;
+import java.util.Scanner;
 
 import net.gfu.seminar.spring.helloworld.Guest;
 
@@ -39,9 +40,17 @@ public class GuestHibernateDao implements GuestDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Guest> findByName(String name) {
-		return this.sessionFactory.getCurrentSession()
-				.createQuery("from Guest as g where g.lastName = :name")
-				.setString("name", name).list();
+
+		Scanner scanner = new Scanner(name);
+		final Object[] args = new Object[]{
+				scanner.next(),
+				scanner.next()
+		};
+		List<Guest> list = this.sessionFactory.getCurrentSession()
+				.createQuery("from Guest as g where g.fristname :firstname AND g.lastName = :lastname")
+				.setString("firstname", args[0].toString()).setString("lastname", args[1].toString()).list();
+		System.out.println("-------------------------------"+args[0].toString());
+		return list;
 	}
 
 	@SuppressWarnings("unchecked")
