@@ -1,6 +1,7 @@
 package net.gfu.seminar.spring.helloworld;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Scanner;
 
 /**
@@ -10,6 +11,7 @@ import java.util.Scanner;
  *
  */
 @Entity @Table(name="guests")
+@XmlRootElement
 public class Guest implements InterfaceGuest {
 
 	private String firstName;
